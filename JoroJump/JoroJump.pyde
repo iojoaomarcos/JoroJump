@@ -1,9 +1,9 @@
-gameState = 0
-PImage menuBackgroud;
-
 from platform_class import *
 from player_class import *
 from functions import *
+
+gameState = 0
+
 
 def mousePressed():
     global platforms
@@ -36,7 +36,16 @@ def draw():
         drawGame()
 
 def drawMenu():
+    menuBackgroud = loadImage("footage/menuBackgroud.jpg")
+    image(menuBackgroud, 0, 0);
     
+    textAlign(CENTER, CENTER)
+    font = loadFont("fonts/3Dventure-72.vlw")
+    # textSize(80)
+    
+    textFont(font)
+    text("Jogar", width/2, 2*height/10)
+    text("OVER", width/2, 3*height/10)
     
     
 
