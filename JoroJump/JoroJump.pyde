@@ -1,3 +1,4 @@
+add_library('minim')
 from platform_class import *
 from player_class import *
 from functions import *
@@ -25,7 +26,26 @@ def setup():
     global p1
     p1 = player()
     
+    #inicia o minim 
+    global minim, s_tema, s_menu, s_gameover, s_out, s_jump
+    minim = Minim(this)
     
+    #musica do menu
+    s_menu = minim.loadFile("hamsterdance.mp3", 2048)
+    
+    #som do pulo
+    s_out = minim.getLineOut();
+    s_jump = Sampler( "jump.mp3", 12, minim);
+    s_jump.patch(s_out)
+    
+    #musica de Game Over
+    s_gameover = minim.loadFile("gameover.mp3", 2048)
+    
+    #musica principal
+    s_tema = minim.loadFile("tema.mp3", 2048)
+    s_tema.shiftGain(s_tema.getGain(),-15,400)
+    
+    s_menu.loop()
 def draw():
     if gameState == 0:
         drawMenu()
@@ -45,6 +65,9 @@ def overRect(x, y, width, height):
 def mousePressed():
     global gameState
     if gameState == 1:
+        s_gameover.pause()
+        s_gameover.rewind()
+        s_tema.loop()
         global platforms
         platforms = []
         starter_platform = platform([100, 700])
@@ -55,6 +78,7 @@ def mousePressed():
     
     if gameState == 0:
         if overJogar:
+            s_tema.loop()
             gameState = 1 # inicia o jogo
 
 
@@ -86,16 +110,21 @@ def drawMenu():
     
 
 def drawGame():
-    frameRate(30)
+    s_menu.pause()
+    frameRate(60)
     background(255)
     for platform in platforms:
         platform.display()
     p1.update(platforms)
     platform_manager(platforms)
-    
+    platform_sounds(p1, platforms)
     #this ends the game if the player falls off the screen
     if p1.ypos > height+25:
         background(0)
+        #para a musica de fundo
+        s_tema.pause()
+        s_tema.rewind()
+        s_gameover.loop()
         fill(255, 255, 255)
         textAlign(CENTER, CENTER)
         textSize(80)
@@ -108,8 +137,12 @@ def drawGame():
         textAlign(LEFT)
         noLoop()
         
-
-    
-
+def platform_sounds(p1, platforms):
+    for platform in platforms:
+        #quando o jogador colide com uma plataforma, aciona o som do pulo 
+        if (((p1.ypos >= platform.ypos-30) and (p1.ypos <= platform.ypos+30) and (p1.yvel >= 0)) and ((p1.xpos >= platform.xpos-25) and (p1.xpos <= platform.xpos+75+25))):
+            s_jump.trigger()
+        else:
+            pass
         
         
