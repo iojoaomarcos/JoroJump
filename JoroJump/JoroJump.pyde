@@ -3,7 +3,7 @@ from player_class import *
 from functions import *
 
 gameState = 0
-rectSize = 300
+rectSize = 250
 overJogar = False
 overCreditos = False
 
@@ -13,9 +13,9 @@ def setup():
     rectMode(CENTER)
     background(255)
     
-    global rectX, rectY
-    rectX = width / 2 - rectSize - 10
-    rectY = height / 2 - rectSize / 2
+    global posXbotaoJogar, posYbotaoJogar
+    posXbotaoJogar = width/2-150
+    posYbotaoJogar = 0.17*height-50
     
     #list of platforms
     global platforms
@@ -34,8 +34,8 @@ def draw():
         
         
 def update(x, y):
-    global rectOver
-    rectOver = overRect(rectX, rectY, rectSize, rectSize)
+    global overJogar
+    overJogar = overRect(posXbotaoJogar, posYbotaoJogar, 250, 50)
         
         
 def overRect(x, y, width, height):
@@ -54,8 +54,8 @@ def mousePressed():
         loop()
     
     if gameState == 0:
-        if rectOver:
-            gameState = 1
+        if overJogar:
+            gameState = 1 # inicia o jogo
 
 
 def drawMenu():
@@ -63,14 +63,26 @@ def drawMenu():
     menuBackgroud = loadImage("footage/menuBackgroud.jpg")
     image(menuBackgroud, 0, 0);
     
+    fill(255)
+    #rect(width/2,0.17*height,250,50);
+    rect(width/2,0.3*height,250,50);
+    
+    fill(0)
     textAlign(CENTER, CENTER)
-    font = loadFont("fonts/3Dventure-72.vlw")
-    # textSize(80)
-    
+    font = loadFont("fonts/3Dventure-72.vlw")  
     textFont(font)
-    text("Jogar\n", width/2, 2*height/10)
-    text("OVER", width/2, 3*height/10)
     
+    text("Jogar\n", width/2, 2*height/10)
+    text("...", width/2, 3*height/10)
+    
+    textSize(30)
+    text("Creditos", width/2, height/1.5)
+    
+    textSize(70)
+    fill(255); rect(width/2, 700, width, 70)
+    esquilo = loadImage("footage/esquilo.png")
+    image(esquilo, 370, 600);
+    fill(0); text("JoroJump", 200, 700)
     
 
 def drawGame():
