@@ -7,6 +7,7 @@ gameState = 0
 rectSize = 250
 overJogar = False
 overCreditos = False
+overBack = False
 
 def setup():
     #global setup options
@@ -56,7 +57,7 @@ def draw():
     if gameState == 0:
         drawMenu()
     if gameState == 1:
-        textAlign(LEFT)
+        textAlign(LEFT) # Ajusta o texto do Score 
         drawGame()
     if gameState == 2:
         drawCreditos()
@@ -65,8 +66,10 @@ def draw():
 def update(x, y):
     global overJogar
     global overCreditos    
+    global overBack
     overJogar = overRect(posXbotaoJogar, posYbotaoJogar, 250, 50)
     overCreditos = overRect(posXbotaoCreditos, posYbotaoCreditos, 250, 50)
+    overBack = overRect(0, 0, 50, 50)
         
         
 def overRect(x, y, width, height):
@@ -93,6 +96,9 @@ def mousePressed():
             gameState = 1 # inicia o jogo
         if overCreditos:
             gameState = 2 # inicia a tela do menu
+    
+    if overBack:
+        gameState = 0
 
 
 def drawMenu():
@@ -123,7 +129,21 @@ def drawMenu():
     
 
 def drawCreditos():
-    background(128);
+    update(mouseX, mouseY)
+    background(230);
+    back = loadImage("footage/back.png")
+    image(back, 0,0)
+    textAlign(CENTER, CENTER);
+    textSize(30)
+    text("Carolina Ale\nJoao Marcos Santos\nRenner Souza", width/2, width/3)
+    text("Computacao Grafica\n @ \nUniversidade Sao Francisco", width/2, height/2.5)
+    
+    textSize(20)
+    text("Professor: Fabio Andrijauskas", width/2, height/1.5)
+    text("2020\\11", width/2, height/1.25)
+    
+    joro = loadImage("footage/Joro Original.jpg")
+    image(joro, width-129, height-115)
 
 
 def drawGame():
