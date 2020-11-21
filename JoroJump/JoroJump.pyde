@@ -15,8 +15,12 @@ def setup():
     background(255)
     
     global posXbotaoJogar, posYbotaoJogar
+    global posXbotaoCreditos, posYbotaoCreditos
     posXbotaoJogar = width/2-150
     posYbotaoJogar = 0.17*height-50
+    posXbotaoCreditos = width/2
+    posYbotaoCreditos = height/1.5
+    
     
     #list of platforms
     global platforms
@@ -46,16 +50,23 @@ def setup():
     s_tema.shiftGain(s_tema.getGain(),-15,400)
     
     s_menu.loop()
+    
+    
 def draw():
     if gameState == 0:
         drawMenu()
     if gameState == 1:
+        textAlign(LEFT)
         drawGame()
+    if gameState == 2:
+        drawCreditos()
         
         
 def update(x, y):
     global overJogar
+    global overCreditos    
     overJogar = overRect(posXbotaoJogar, posYbotaoJogar, 250, 50)
+    overCreditos = overRect(posXbotaoCreditos, posYbotaoCreditos, 250, 50)
         
         
 def overRect(x, y, width, height):
@@ -80,6 +91,8 @@ def mousePressed():
         if overJogar:
             s_tema.loop()
             gameState = 1 # inicia o jogo
+        if overCreditos:
+            gameState = 2 # inicia a tela do menu
 
 
 def drawMenu():
@@ -88,7 +101,7 @@ def drawMenu():
     image(menuBackgroud, 0, 0);
     
     fill(255)
-    #rect(width/2,0.17*height,250,50);
+    rect(width/2,height/1.5,250,50);
     rect(width/2,0.3*height,250,50);
     
     fill(0)
@@ -108,6 +121,10 @@ def drawMenu():
     image(esquilo, 370, 600);
     fill(0); text("JoroJump", 200, 700)
     
+
+def drawCreditos():
+    background(128);
+
 
 def drawGame():
     s_menu.pause()
