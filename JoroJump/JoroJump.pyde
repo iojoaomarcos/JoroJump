@@ -31,18 +31,18 @@ def setup():
     minim = Minim(this)
     
     #musica do menu
-    s_menu = minim.loadFile("hamsterdance.mp3", 2048)
+    s_menu = minim.loadFile("sounds/hamsterdance.mp3", 2048)
     
     #som do pulo
     s_out = minim.getLineOut();
-    s_jump = Sampler( "jump.mp3", 12, minim);
+    s_jump = Sampler( "sounds/jump.mp3", 12, minim);
     s_jump.patch(s_out)
     
     #musica de Game Over
-    s_gameover = minim.loadFile("gameover.mp3", 2048)
+    s_gameover = minim.loadFile("sounds/gameover.mp3", 2048)
     
     #musica principal
-    s_tema = minim.loadFile("tema.mp3", 2048)
+    s_tema = minim.loadFile("sounds/tema.mp3", 2048)
     s_tema.shiftGain(s_tema.getGain(),-15,400)
     
     s_menu.loop()
