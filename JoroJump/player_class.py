@@ -50,9 +50,16 @@ class player():
                 self.score += self.climb
             
         #this re-draws the player and score each frame
-        noStroke()
-        fill(self.colour)
-        rect(self.xpos, self.ypos, 50, 50)
+    def display(self,joro):         
+        if (keyCode == RIGHT):
+            image(joro[0],self.xpos, self.ypos, joro[0].width * 0.04, joro[0].height* 0.04)
+        elif (keyCode == LEFT):
+            image(joro[1],self.xpos, self.ypos, joro[1].width * 0.04, joro[1].height* 0.04)
+        else:
+            image(joro[1],self.xpos, self.ypos, joro[1].width * 0.04, joro[1].height* 0.04)
+        fill(0,0,0)
+        textSize(30)
+        text("Score: "+str(self.score/100), 20, 40)
         fill(0, 0, 0)
         textSize(30)
         text("Score: "+str(self.score/100), 20, 40)
