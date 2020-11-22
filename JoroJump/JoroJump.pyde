@@ -12,7 +12,7 @@ add_library('minim')
 from platform_class import *
 from player_class import *
 from functions import *
-
+from powerup_class import *
 # gameState representa 
 gameState = 0
 overJogar = False
@@ -53,6 +53,10 @@ def setup():
     plat.append(platg)
     plat.append(platm)
     
+    #powerupskins
+    global acorn
+    acorn = loadImage("footage/PowerUp/bolota2.png")    
+    
     #list of platforms
     global platforms
     platforms = []
@@ -61,8 +65,14 @@ def setup():
     global p1
     p1 = player()
     
+    #list of powerups
+    global powerups 
+    powerups = []
+    starter_powerup = powerup([random(425), 85])
+    powerups.append(starter_powerup) 
+       
     #inicia o minim 
-    global minim, s_tema, s_menu, s_gameover, s_out, s_jump
+    global minim, s_tema, s_menu, s_gameover, s_out, s_jump,s_out2,s_broke,s_out3,s_pwjump
     minim = Minim(this)
     
     #musica do menu
@@ -72,6 +82,16 @@ def setup():
     s_out = minim.getLineOut();
     s_jump = Sampler( "sounds/jump.mp3", 12, minim);
     s_jump.patch(s_out)
+    
+    #som da plat quebrando
+    s_out2 = minim.getLineOut();
+    s_broke = Sampler( "sounds/broke.mp3", 12, minim);
+    s_broke.patch(s_out2) 
+    
+    #som do power up
+    s_out3 = minim.getLineOut();
+    s_pwjump = Sampler( "sounds/powerjump.mp3", 12, minim);
+    s_pwjump.patch(s_out3)      
     
     #musica de Game Over
     s_gameover = minim.loadFile("sounds/gameover.mp3", 2048)
@@ -116,6 +136,10 @@ def mousePressed():
         platforms = []
         starter_platform = platform([100, 700])
         platforms.append(starter_platform)
+        global powerups 
+        powerups = []
+        starter_powerup = powerup([random(425), 85])
+        powerups.append(starter_powerup) 
         global p1
         p1 = player()
         loop()
@@ -178,14 +202,19 @@ def drawCreditos():
 
 def drawGame():
     s_menu.pause()
-    frameRate(45)
+    frameRate(60)
     background(wood)
+    
     for platform in platforms:
         platform.display(plat)
-    
+        
+    for powerup in powerups:
+        powerup.display(acorn)  
+          
     p1.display(joro) 
-    p1.update(platforms)
+    p1.update(platforms,s_broke,powerups,s_pwjump)
     platform_manager(platforms)
+    powerup_manager(powerups)
     platform_sounds(p1, platforms)
     #this ends the game if the player falls off the screen
     if p1.ypos > height+25:
