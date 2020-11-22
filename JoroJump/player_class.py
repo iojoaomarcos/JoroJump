@@ -26,7 +26,7 @@ class player():
                 self.yvel = -28
                 #print(self.score/100)
                 if self.score/100 > 200:
-                    if random(5) > 3:
+                    if random(5) > 4:
                         platform.destroy()
                 elif self.score/100 > 500:
                     platform.destroy()
@@ -59,7 +59,7 @@ class player():
             image(joro[1],self.xpos, self.ypos, joro[1].width * 0.04, joro[1].height* 0.04)
         fill(0,0,0)
         textSize(30)
-        text("Score: "+str(self.score/100), 20, 40)
+        text("Pontos: "+str(self.score/100), 20, 40)
         fill(0, 0, 0)
         textSize(30)
-        text("Score: "+str(self.score/100), 20, 40)
+        text("Pontos: "+str(self.score/100), 20, 40)

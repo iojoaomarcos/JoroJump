@@ -1,10 +1,20 @@
+# JOROJUMP
+
+# Carolina Ale
+# Joao Marcos Santos
+# Renner Souza
+
+# Computacao Grafica
+# Engenharia da Computacao @ Universidade Sao Francisco
+# Professor Fabio Andrijauskas
+
 add_library('minim')
 from platform_class import *
 from player_class import *
 from functions import *
 
+# gameState representa 
 gameState = 0
-rectSize = 250
 overJogar = False
 overCreditos = False
 overBack = False
@@ -72,8 +82,8 @@ def setup():
     
     s_menu.loop()
     
-    
-def draw():
+# Funcao Principal para desenhar na tela o proprio jogo em si, menu e creditos
+def draw(): 
     if gameState == 0:
         drawMenu()
     if gameState == 1:
@@ -82,7 +92,7 @@ def draw():
     if gameState == 2:
         drawCreditos()
         
-        
+# Verifica e atualiza a posicao do mouse        
 def update(x, y):
     global overJogar
     global overCreditos    
@@ -91,7 +101,7 @@ def update(x, y):
     overCreditos = overRect(posXbotaoCreditos, posYbotaoCreditos, 250, 50)
     overBack = overRect(0, 0, 50, 50)
         
-        
+# Calcula a distancia entre a posicao do mouse e posicao do botao        
 def overRect(x, y, width, height):
     return x <= mouseX <= x + width and y <= mouseY <= y + height
 
@@ -117,7 +127,7 @@ def mousePressed():
         if overCreditos:
             gameState = 2 # inicia a tela do menu
     
-    if overBack:
+    if overBack: #volta para o menu
         gameState = 0
 
 
@@ -156,7 +166,7 @@ def drawCreditos():
     textAlign(CENTER, CENTER);
     textSize(30)
     text("Carolina Ale\nJoao Marcos Santos\nRenner Souza", width/2, width/3)
-    text("Computacao Grafica\n @ \nUniversidade Sao Francisco", width/2, height/2.5)
+    text("Computacao Grafica\n @ \nUniversidade \nSao \nFrancisco", width/2, height/2.5)
     
     textSize(20)
     text("Professor: Fabio Andrijauskas", width/2, height/1.5)
@@ -168,7 +178,7 @@ def drawCreditos():
 
 def drawGame():
     s_menu.pause()
-    frameRate(60)
+    frameRate(45)
     background(wood)
     for platform in platforms:
         platform.display(plat)
@@ -190,7 +200,7 @@ def drawGame():
         text("GAME", width/2, 2*height/10)
         text("OVER", width/2, 3*height/10)
         textSize(40)
-        text("Score: "+str(p1.score/100), width/2, 5*height/10)
+        text("Pontos: "+str(p1.score/100), width/2, 5*height/10)
         text("Retry: [CLICK]", width/2, 7*height/10)
         text("Exit: [ESC]", width/2, 8*height/10)
         textAlign(LEFT)
