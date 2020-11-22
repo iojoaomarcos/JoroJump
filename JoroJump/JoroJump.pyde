@@ -23,6 +23,26 @@ def setup():
     posYbotaoCreditos = height/1.5
     
     
+    #background
+    global wood
+    wood = loadImage("footage/wood.jpg")
+    
+    #joroskins
+    global joro
+    joro = []
+    jorod = loadImage("footage/Esquilo/joro0.png")
+    joroe = loadImage("footage/Esquilo/joro1.png")    
+    joro.append(jorod)
+    joro.append(joroe)
+
+    #platskins
+    global plat
+    plat = []
+    platg = loadImage("footage/Platforms/plat0.png")
+    platm = loadImage("footage/Platforms/plat1.png")
+    plat.append(platg)
+    plat.append(platm)
+    
     #list of platforms
     global platforms
     platforms = []
@@ -149,9 +169,11 @@ def drawCreditos():
 def drawGame():
     s_menu.pause()
     frameRate(60)
-    background(255)
+    background(wood)
     for platform in platforms:
-        platform.display()
+        platform.display(plat)
+    
+    p1.display(joro) 
     p1.update(platforms)
     platform_manager(platforms)
     platform_sounds(p1, platforms)
