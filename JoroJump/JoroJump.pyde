@@ -1,12 +1,23 @@
+# JOROJUMP
+
+# Carolina Ale
+# Joao Marcos Santos
+# Renner Souza
+
+# Computacao Grafica
+# Engenharia da Computacao @ Universidade Sao Francisco
+# Professor Fabio Andrijauskas
+
 add_library('minim')
 from platform_class import *
 from player_class import *
 from functions import *
 
+# gameState representa 
 gameState = 0
-rectSize = 250
 overJogar = False
 overCreditos = False
+overBack = False
 
 def setup():
     #global setup options
@@ -15,8 +26,12 @@ def setup():
     background(255)
     
     global posXbotaoJogar, posYbotaoJogar
+    global posXbotaoCreditos, posYbotaoCreditos
     posXbotaoJogar = width/2-150
     posYbotaoJogar = 0.17*height-50
+    posXbotaoCreditos = width/2
+    posYbotaoCreditos = height/1.5
+    
     
     #background
     global wood
@@ -66,18 +81,27 @@ def setup():
     s_tema.shiftGain(s_tema.getGain(),-15,400)
     
     s_menu.loop()
-def draw():
+    
+# Funcao Principal para desenhar na tela o proprio jogo em si, menu e creditos
+def draw(): 
     if gameState == 0:
         drawMenu()
     if gameState == 1:
+        textAlign(LEFT) # Ajusta o texto do Score 
         drawGame()
+    if gameState == 2:
+        drawCreditos()
         
-        
+# Verifica e atualiza a posicao do mouse        
 def update(x, y):
     global overJogar
+    global overCreditos    
+    global overBack
     overJogar = overRect(posXbotaoJogar, posYbotaoJogar, 250, 50)
+    overCreditos = overRect(posXbotaoCreditos, posYbotaoCreditos, 250, 50)
+    overBack = overRect(0, 0, 50, 50)
         
-        
+# Calcula a distancia entre a posicao do mouse e posicao do botao        
 def overRect(x, y, width, height):
     return x <= mouseX <= x + width and y <= mouseY <= y + height
 
@@ -100,6 +124,11 @@ def mousePressed():
         if overJogar:
             s_tema.loop()
             gameState = 1 # inicia o jogo
+        if overCreditos:
+            gameState = 2 # inicia a tela do menu
+    
+    if overBack: #volta para o menu
+        gameState = 0
 
 
 def drawMenu():
@@ -108,7 +137,7 @@ def drawMenu():
     image(menuBackgroud, 0, 0);
     
     fill(255)
-    #rect(width/2,0.17*height,250,50);
+    rect(width/2,height/1.5,250,50);
     rect(width/2,0.3*height,250,50);
     
     fill(0)
@@ -129,9 +158,27 @@ def drawMenu():
     fill(0); text("JoroJump", 200, 700)
     
 
+def drawCreditos():
+    update(mouseX, mouseY)
+    background(230);
+    back = loadImage("footage/back.png")
+    image(back, 0,0)
+    textAlign(CENTER, CENTER);
+    textSize(30)
+    text("Carolina Ale\nJoao Marcos Santos\nRenner Souza", width/2, width/3)
+    text("Computacao Grafica\n @ \nUniversidade \nSao \nFrancisco", width/2, height/2.5)
+    
+    textSize(20)
+    text("Professor: Fabio Andrijauskas", width/2, height/1.5)
+    text("2020\\11", width/2, height/1.25)
+    
+    joro = loadImage("footage/Joro Original.jpg")
+    image(joro, width-129, height-115)
+
+
 def drawGame():
     s_menu.pause()
-    frameRate(60)
+    frameRate(45)
     background(wood)
     for platform in platforms:
         platform.display(plat)
@@ -153,7 +200,7 @@ def drawGame():
         text("GAME", width/2, 2*height/10)
         text("OVER", width/2, 3*height/10)
         textSize(40)
-        text("Score: "+str(p1.score/100), width/2, 5*height/10)
+        text("Pontos: "+str(p1.score/100), width/2, 5*height/10)
         text("Retry: [CLICK]", width/2, 7*height/10)
         text("Exit: [ESC]", width/2, 8*height/10)
         textAlign(LEFT)
