@@ -9,7 +9,7 @@ class player():
         self.climb = 0
         self.score = 0
         
-    def update(self, platforms):
+    def update(self, platforms,s_broke,powerups,s_pwjump):
         #this changes the horizontal velocities based on arrow keys
         if (keyPressed and (keyCode == LEFT)):
             self.xpos -= 10
@@ -27,10 +27,14 @@ class player():
                 #print(self.score/100)
                 if self.score/100 > 200:
                     if random(5) > 4:
-                        platform.destroy()
+                        platform.destroy(s_broke)
                 elif self.score/100 > 500:
-                    platform.destroy()
-        
+                    platform.destroy(s_broke)
+        for powerup in powerups:
+            if (((self.ypos >= powerup.ypos-60) and (self.ypos <= powerup.ypos+60) and (self.yvel >= 0)) and ((self.xpos >= powerup.xpos-60) and (self.xpos <= powerup.xpos+60))):
+                self.ypos = powerup.ypos-25
+                self.yvel = -50
+                powerup.destroy(s_pwjump)        
         #this updates the player position each frame based on its velocity
         self.xpos += self.xvel
         self.ypos += self.yvel
@@ -48,7 +52,9 @@ class player():
             for platform in platforms:
                 platform.ypos += self.climb
                 self.score += self.climb
-            
+            for powerup in powerups:
+                powerup.ypos += self.climb
+                self.score += self.climb            
         #this re-draws the player and score each frame
     def display(self,joro):         
         if (keyCode == RIGHT):
