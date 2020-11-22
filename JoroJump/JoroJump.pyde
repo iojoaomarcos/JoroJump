@@ -1,3 +1,14 @@
+# JOROJUMP
+
+# Carolina Ale
+# Joao Marcos Santos
+# Renner Souza
+
+# Computacao Grafica
+# Engenharia da Computacao @ Universidade Sao Francisco
+# Professor Fabio Andrijauskas
+
+
 add_library('minim')
 from platform_class import *
 from player_class import *
