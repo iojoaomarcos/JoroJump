@@ -200,6 +200,15 @@ def drawCreditos():
     image(joro, width-129, height-115)
 
 
+def keyPressed():
+    global gameState
+    global p1
+    if keyCode == UP:
+        gameState = 0
+        drawMenu()
+        p1.ypos = height - 100
+
+
 def drawGame():
     s_menu.pause()
     frameRate(60)
@@ -216,13 +225,14 @@ def drawGame():
     platform_manager(platforms)
     powerup_manager(powerups)
     platform_sounds(p1, platforms)
+    
     #this ends the game if the player falls off the screen
     if p1.ypos > height+25:
         background(0)
         #para a musica de fundo
         s_tema.pause()
         s_tema.rewind()
-        s_gameover.loop()
+        s_gameover.play()
         fill(255, 255, 255)
         textAlign(CENTER, CENTER)
         textSize(80)
@@ -230,10 +240,11 @@ def drawGame():
         text("OVER", width/2, 3*height/10)
         textSize(40)
         text("Pontos: "+str(p1.score/100), width/2, 5*height/10)
+        text("Main Menu: [UP]", width/2, 0.6*height)
         text("Retry: [CLICK]", width/2, 7*height/10)
         text("Exit: [ESC]", width/2, 8*height/10)
         textAlign(LEFT)
-        noLoop()
+        #noLoop()
         
 def platform_sounds(p1, platforms):
     for platform in platforms:
