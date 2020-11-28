@@ -118,7 +118,7 @@ def update(x, y):
     global overCreditos    
     global overBack
     overJogar = overRect(posXbotaoJogar, posYbotaoJogar, 250, 50)
-    overCreditos = overRect(posXbotaoCreditos, posYbotaoCreditos, 250, 50)
+    overCreditos = overRect(posXbotaoCreditos/2, posYbotaoCreditos-25, 250, 50)
     overBack = overRect(0, 0, 50, 50)
         
 # Calcula a distancia entre a posicao do mouse e posicao do botao        
