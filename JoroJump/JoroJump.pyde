@@ -19,9 +19,12 @@ gameState = 0
 overJogar = False
 overCreditos = False
 overBack = False
+overRightSkinSelector = False
+overLeftSkinSelector = False
 
 joroSelected = 0
 joroStyleID = ["Default", "Cowboy", "Super-Joro", "Magnate", "Witch"]
+joroStyleQuantity = 5
 
 joroStylePic = [loadImage("footage/Esquilo/Esquilo_Standard.png"), \
                 loadImage("footage/Esquilo/Esquilo_Standard_Skin1_Cowboy.png"), \
@@ -130,9 +133,14 @@ def update(x, y):
     global overJogar
     global overCreditos    
     global overBack
+    global overRightSkinSelector
+    global overLeftSkinSelector
+    
     overJogar = overRect(posXbotaoJogar, posYbotaoJogar, 250, 50)
     overCreditos = overRect(posXbotaoCreditos/2, posYbotaoCreditos-25, 250, 50)
     overBack = overRect(0, 0, 50, 50)
+    overRightSkinSelector = overRect(width-80, 360, 200, 200)
+    overLeftSkinSelector = overRect(0, 360, 80, 80)
         
 # Calcula a distancia entre a posicao do mouse e posicao do botao        
 def overRect(x, y, width, height):
@@ -141,6 +149,8 @@ def overRect(x, y, width, height):
 
 def mousePressed():
     global gameState
+    global joroSelected
+    
     if gameState == 1:
         s_gameover.pause()
         s_gameover.rewind()
@@ -166,6 +176,21 @@ def mousePressed():
     
     if overBack: #volta para o menu
         gameState = 0
+        
+    if overRightSkinSelector:
+        print(joroSelected)
+        if joroSelected == (joroStyleQuantity - 1):
+            joroSelected = 0
+        else:
+            joroSelected += 1
+    
+    if overLeftSkinSelector:
+        print(joroSelected)
+        if joroSelected == 0:
+            joroSelected = joroStyleQuantity - 1
+        else:
+            joroSelected -= 1
+            
 
 
 def drawMenu():
@@ -178,7 +203,7 @@ def drawMenu():
     
     fill(255)
     rect(width/2,height/1.5,250,50);
-    rect(width/2,0.5*height,400,50);
+    rect(width/2,0.5*height,350,50);
     rect(width/2,height*0.166,250,55);
     
     fill(0)
@@ -188,10 +213,12 @@ def drawMenu():
     
     text("Jogar\n", width/2, 2*height/10)
     
-    text(joroStyleID[0], width/2, 0.5*height)
+    textSize(42)
+    text(joroStyleID[joroSelected], width/2, 0.5*height)
     arrow = loadImage("footage/arrow.png")
-    arrow.rezise(100, 100)
-    image(arrow, 200, 200)
+    arrow.resize(80, 80)
+    image(arrow, 0, 360) 
+    image(arrow, width-80, 360)
     
     # if joroSelected == 0:
     #     image(joroStylePic[1], width/2, height/2)
