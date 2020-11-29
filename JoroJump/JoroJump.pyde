@@ -13,18 +13,25 @@ from platform_class import *
 from player_class import *
 from functions import *
 from powerup_class import *
+from star import*
 # gameState representa 
 gameState = 0
 overJogar = False
 overCreditos = False
 overBack = False
 
+#Set variables
+stars = []
+speed = 1.0
+play = True
+
 def setup():
     #global setup options
     size(500, 800)
     rectMode(CENTER)
     background(255)
-    
+    [stars.append(Star(width, height)) for i in range(800)]
+    speed = map(10, 0, width, 0, 100)
     global posXbotaoJogar, posYbotaoJogar
     global posXbotaoCreditos, posYbotaoCreditos
     posXbotaoJogar = width/2-150
@@ -210,8 +217,16 @@ def drawCreditos():
 def drawGame():
     s_menu.pause()
     frameRate(60)
-    #background(255)
-    setBackground(p1)
+    
+    if p1.score/100 <= 1000:
+        setBackground(p1)
+    
+    if p1.score/100 > 1000:
+        background(0)
+        for i in range(len(stars)):
+            stars[i].update(speed)
+            stars[i].show()
+    
     for platform in platforms:
         platform.display(plat,p1)
         
@@ -219,10 +234,9 @@ def drawGame():
         powerup.display(acorn)  
           
     p1.display(joro) 
-    p1.update(platforms,s_broke,powerups,s_pwjump)
+    p1.update(platforms,s_broke,powerups,s_pwjump,s_jump)
     platform_manager(platforms)
     powerup_manager(powerups)
-    platform_sounds(p1, platforms)
     #this ends the game if the player falls off the screen
     if p1.ypos > height+25:
         background(0)
@@ -242,13 +256,6 @@ def drawGame():
         textAlign(LEFT)
         noLoop()
         
-def platform_sounds(p1, platforms):
-    for platform in platforms:
-        #quando o jogador colide com uma plataforma, aciona o som do pulo 
-        if (((p1.ypos >= platform.ypos-30) and (p1.ypos <= platform.ypos+30) and (p1.yvel >= 0)) and ((p1.xpos >= platform.xpos-25) and (p1.xpos <= platform.xpos+75+25))):
-            s_jump.trigger()
-        else:
-            pass
         
 def setBackground(p1):
         if p1.score/100 <= 300:
@@ -257,5 +264,7 @@ def setBackground(p1):
             background(wood)
         if p1.score/100 > 500 and p1.score/100 <= 700: 
             background(sky)
-        if p1.score/100 > 700:
-            background(space)       
+        if p1.score/100 > 700 and p1.score/100 <= 1000:
+            background(space)
+    
+            

@@ -9,7 +9,7 @@ class player():
         self.climb = 0
         self.score = 0
         
-    def update(self, platforms,s_broke,powerups,s_pwjump):
+    def update(self, platforms,s_broke,powerups,s_pwjump,s_jump):
         #this changes the horizontal velocities based on arrow keys
         if (keyPressed and (keyCode == LEFT)):
             self.xpos -= 10
@@ -22,27 +22,28 @@ class player():
         #this updates the player position and velocity on collision
         for platform in platforms:
             if (((self.ypos >= platform.ypos-30) and (self.ypos <= platform.ypos+30) and (self.yvel >= 0)) and ((self.xpos >= platform.xpos-25) and (self.xpos <= platform.xpos+60+25))):
+                s_jump.trigger()
                 self.ypos = platform.ypos-25
                 self.yvel = -28
                 
                 #fase wood
-                if self.score/100 > 300:
-                    if random(5) > 4:
+                if self.score/100 > 300 and self.score/100 <= 500 :
+                    if random(2) > 4:
                         platform.destroy(s_broke)
                         
                 #fase sky        
-                elif self.score/100 > 500:
-                    if random(5) > 3:
+                elif self.score/100 > 500 and self.score/100 <= 700:
+                    if random(2) > 3:
                         platform.destroy(s_broke)
                     
                 #fase space
-                elif self.score/100 > 700:
-                    if random(5) > 2:
+                elif self.score/100 > 700 and self.score/100 <= 900 :
+                    if random(2) > 2:
                         platform.destroy(s_broke)
                     
                 #fase infinity
-                elif self.score/100 > 900:
-                        platform.destroy(s_broke)    
+                #elif self.score/100 > 900:
+                        #platform.destroy(s_broke)    
         for powerup in powerups:
             if (((self.ypos >= powerup.ypos-60) and (self.ypos <= powerup.ypos+60) and (self.yvel >= 0)) and ((self.xpos >= powerup.xpos-60) and (self.xpos <= powerup.xpos+60))):
                 self.ypos = powerup.ypos-25
