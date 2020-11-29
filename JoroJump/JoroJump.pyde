@@ -13,17 +13,30 @@ from platform_class import *
 from player_class import *
 from functions import *
 from powerup_class import *
-# gameState representa 
+
+# gameState representa se está em jogo, menu, créditos, etc
 gameState = 0
 overJogar = False
 overCreditos = False
 overBack = False
+
+joroSelected = 0
+joroStyleID = ["Default", "Cowboy", "Super-Joro", "Magnate", "Witch"]
+
+joroStylePic = [loadImage("footage/Esquilo/Esquilo_Standard.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin1_Cowboy.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin2_Mario.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin3_Cartola.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin4_Bruxa.png")]
 
 def setup():
     #global setup options
     size(500, 800)
     rectMode(CENTER)
     background(255)
+    
+    global joroSelected
+    joroSelected = 0
     
     global posXbotaoJogar, posYbotaoJogar
     global posXbotaoCreditos, posYbotaoCreditos
@@ -156,13 +169,17 @@ def mousePressed():
 
 
 def drawMenu():
+    global joroSelected
+    global joroStylePic
+    
     update(mouseX, mouseY)
     menuBackgroud = loadImage("footage/menuBackgroud.jpg")
     image(menuBackgroud, 0, 0);
     
     fill(255)
     rect(width/2,height/1.5,250,50);
-    rect(width/2,0.3*height,250,50);
+    rect(width/2,0.5*height,400,50);
+    rect(width/2,height*0.166,250,55);
     
     fill(0)
     textAlign(CENTER, CENTER)
@@ -170,7 +187,14 @@ def drawMenu():
     textFont(font)
     
     text("Jogar\n", width/2, 2*height/10)
-    text("...", width/2, 3*height/10)
+    
+    text(joroStyleID[0], width/2, 0.5*height)
+    arrow = loadImage("footage/arrow.png")
+    arrow.rezise(100, 100)
+    image(arrow, 200, 200)
+    
+    # if joroSelected == 0:
+    #     image(joroStylePic[1], width/2, height/2)
     
     textSize(30)
     text("Creditos", width/2, height/1.5)
