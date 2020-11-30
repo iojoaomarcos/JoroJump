@@ -1,4 +1,9 @@
+#***codigo utilizado para background da ultima fase***
 
+#Layton Wright
+#16/02/2017
+#Python version of the StarField processing code written by Daniel Shiffman.
+#https://github.com/CodingTrain/Rainbow-Code/tree/master/challenges/CC_01_StarField
 
 class Star:
     def __init__(self, width, height):

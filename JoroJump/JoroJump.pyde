@@ -1,8 +1,8 @@
 # JOROJUMP
 
-# Carolina Ale
-# Joao Marcos Santos
-# Renner Souza
+# Carolina Ale                 002.2017.01385
+# Joao Marcos Santos           002.2017.00153
+# Renner Souza                 002.2017.00934
 
 # Computacao Grafica
 # Engenharia da Computacao @ Universidade Sao Francisco
@@ -23,28 +23,33 @@ overBack = False
 overRightSkinSelector = False
 overLeftSkinSelector = False
 
-joroSelected = 0
-joroStyleID = ["Default", "Cowboy", "Super-Joro", "Magnate", "Witch"]
+#skins
+joroStyleID = ["Joro", "Indiana Joro", "Joro Bros", "Lord Joro", "Bruxoro", "Joranjo"]
 joroStyleQuantity = len(joroStyleID)
+joroStylePic = []
 
-joroStylePic = [loadImage("footage/Esquilo/Esquilo_Standard.png"), \
-                loadImage("footage/Esquilo/Esquilo_Standard_Skin1_Cowboy.png"), \
-                loadImage("footage/Esquilo/Esquilo_Standard_Skin2_Mario.png"), \
-                loadImage("footage/Esquilo/Esquilo_Standard_Skin3_Cartola.png"), \
-                loadImage("footage/Esquilo/Esquilo_Standard_Skin4_Bruxa.png")]
 
-#Set variables
-stars = []
-speed = 1.0
-play = True
+
 
 def setup():
-    #global setup options
     size(500, 800)
     rectMode(CENTER)
     background(255)
+    
+    #campo de estrelas(ultima fase)
+    global stars,speed
+    stars = []
+    speed = 1.0
     [stars.append(Star(width, height)) for i in range(800)]
     speed = map(10, 0, width, 0, 100)
+    
+    #skins do personagem
+    joroStylePic.append(loadImage("footage/Esquilo/Esquilo_Standard.png"))
+    joroStylePic.append(loadImage("footage/Esquilo/Esquilo_Standard_Skin1_Cowboy.png")) 
+    joroStylePic.append(loadImage("footage/Esquilo/Esquilo_Standard_Skin2_Mario.png"))
+    joroStylePic.append(loadImage("footage/Esquilo/Esquilo_Standard_Skin3_Cartola.png"))
+    joroStylePic.append(loadImage("footage/Esquilo/Esquilo_Standard_Skin4_Bruxa.png"))
+    joroStylePic.append(loadImage("footage/Esquilo/Esquilo_Standard_Skin5_Celeste.png"))
     
     global joroSelected
     joroSelected = 0
@@ -57,38 +62,26 @@ def setup():
     posYbotaoCreditos = height/1.5
     
     
-    #background
+    #backgrounds
     global ground,wood,sky,space
     ground = loadImage("footage/backgrounds/ground.jpg")
     wood = loadImage("footage/backgrounds/wood.jpg")
     sky = loadImage("footage/backgrounds/sky.jpg")
     space = loadImage("footage/backgrounds/star.jpg")
     
-    #joroskins
-    global joro
-    joro = []
-    jorod = loadImage("footage/Esquilo/joro0.png")
-    joroe = loadImage("footage/Esquilo/joro1.png")    
-    joro.append(jorod)
-    joro.append(joroe)
-
     #platskins
     global plat
     plat = []
-    platg = loadImage("footage/Platforms/plat0.png")
-    platm = loadImage("footage/Platforms/plat1.png")
-    plats = loadImage("footage/Platforms/plat2.png")
-    plate = loadImage("footage/Platforms/plat3.png")
-    plat.append(platg)
-    plat.append(platm)
-    plat.append(plats)
-    plat.append(plate)
+    plat.append(loadImage("footage/Platforms/plat0.png"))
+    plat.append(loadImage("footage/Platforms/plat1.png"))
+    plat.append(loadImage("footage/Platforms/plat2.png"))
+    plat.append(loadImage("footage/Platforms/plat3.png"))
     
-    #powerupskins
+    #powerupskin
     global acorn
     acorn = loadImage("footage/PowerUp/bolota2.png")    
     
-    #list of platforms
+    #plataformas
     global platforms
     platforms = []
     starter_platform = platform([100, 700])
@@ -96,7 +89,7 @@ def setup():
     global p1
     p1 = player()
     
-    #list of powerups
+    #powerup
     global powerups 
     powerups = []
     starter_powerup = powerup([random(425), 85])
@@ -161,56 +154,9 @@ def update(x, y):
 def overRect(x, y, width, height):
     return x <= mouseX <= x + width and y <= mouseY <= y + height
 
-
-def mousePressed():
-    global gameState
-    global joroSelected
-    
-    if gameState == 1:
-        s_gameover.pause()
-        s_gameover.rewind()
-        s_tema.loop()
-        global platforms
-        platforms = []
-        starter_platform = platform([100, 700])
-        platforms.append(starter_platform)
-        global powerups 
-        powerups = []
-        starter_powerup = powerup([random(425), 85])
-        powerups.append(starter_powerup) 
-        global p1
-        p1 = player()
-        loop()
-    
-    if gameState == 0:
-        if overJogar:
-            s_tema.loop()
-            gameState = 1 # inicia o jogo
-        if overCreditos:
-            gameState = 2 # inicia a tela do menu
-    
-    if overBack: #volta para o menu
-        gameState = 0
-        
-    if overRightSkinSelector:
-        print(joroSelected)
-        if joroSelected == (joroStyleQuantity - 1):
-            joroSelected = 0
-        else:
-            joroSelected += 1
-    
-    if overLeftSkinSelector:
-        print(joroSelected)
-        if joroSelected == 0:
-            joroSelected = joroStyleQuantity - 1
-        else:
-            joroSelected -= 1
-            
-
 def drawMenu():
     global joroSelected
     global joroStylePic
-    
     update(mouseX, mouseY)
     menuBackgroud = loadImage("footage/menuBackgroud.jpg")
     image(menuBackgroud, 0, 0);
@@ -226,6 +172,8 @@ def drawMenu():
     textFont(font)
     
     text("Jogar\n", width/2, 2*height/10)
+    
+    image(joroStylePic[joroSelected],150,200, joroStylePic[joroSelected].width * 0.1, joroStylePic[joroSelected].height* 0.1)
     
     textSize(42)
     text(joroStyleID[joroSelected], width/2, 0.5*height)
@@ -264,15 +212,6 @@ def drawCreditos():
     image(joro, width-129, height-115)
 
 
-def keyPressed():
-    global gameState
-    global p1
-    if keyCode == UP:
-        gameState = 0
-        drawMenu()
-        p1.ypos = height - 100
-
-
 def drawGame():
     s_menu.pause()
     frameRate(60)
@@ -292,11 +231,10 @@ def drawGame():
     for powerup in powerups:
         powerup.display(acorn)  
           
-    p1.display(joro) 
+    p1.display(joroStylePic,joroSelected) 
     p1.update(platforms,s_broke,powerups,s_pwjump,s_jump)
     platform_manager(platforms)
     powerup_manager(powerups)
-    #platform_sounds(p1, platforms)
 
     #Quando o jogador cai para fora da tela: Game Over
     if p1.ypos > height+25:
@@ -316,9 +254,73 @@ def drawGame():
         text("Retry: [CLICK]", width/2, 7*height/10)
         text("Exit: [ESC]", width/2, 8*height/10)
         textAlign(LEFT)
-        #noLoop()
         
+def mousePressed():
+    global gameState
+    global joroSelected
+    
+    if gameState == 1:
+        s_gameover.pause()
+        s_gameover.rewind()
+        s_tema.loop()
+        global platforms
+        platforms = []
+        starter_platform = platform([100, 700])
+        platforms.append(starter_platform)
+        global powerups 
+        powerups = []
+        starter_powerup = powerup([random(425), 85])
+        powerups.append(starter_powerup) 
+        global p1
+        p1 = player()
+        loop()
+    
+    if gameState == 0:
+        if overJogar:
+            s_tema.loop()
+            global platforms
+            platforms = []
+            starter_platform = platform([100, 700])
+            platforms.append(starter_platform)
+            global powerups 
+            powerups = []
+            starter_powerup = powerup([random(425), 85])
+            powerups.append(starter_powerup) 
+            global p1
+            p1 = player()
+            gameState = 1 # inicia o jogo
+        if overCreditos:
+            gameState = 2 # inicia a tela do menu
+    
+    if overBack: #volta para o menu
+        gameState = 0
         
+    if overRightSkinSelector:
+        if joroSelected == (joroStyleQuantity - 1):
+            joroSelected = 0
+        else:
+            joroSelected += 1
+    
+    if overLeftSkinSelector:
+        print(joroSelected)
+        if joroSelected == 0:
+            joroSelected = joroStyleQuantity - 1
+        else:
+            joroSelected -= 1
+
+def keyPressed():
+    global gameState
+    global p1
+    if keyCode == UP:
+        s_tema.pause()
+        s_tema.rewind()
+        s_gameover.pause()
+        s_gameover.rewind()
+        s_menu.rewind()
+        s_menu.loop()
+        gameState = 0
+        drawMenu()                    
+
 def setBackground(p1):
         if p1.score/100 <= 300:
             background(ground)

@@ -5,6 +5,7 @@ class platform(object):
     
         
     def display(self,plat,player):
+        #muda as skins da plataforma de acordo com as fases
         if player.score/100 <= 300:
             image(plat[0],self.xpos, self.ypos, plat[0].width * 0.05, plat[0].height* 0.05)
         if player.score/100 > 300 and player.score/100 <= 500:
