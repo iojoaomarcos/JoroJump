@@ -14,11 +14,24 @@ from player_class import *
 from functions import *
 from powerup_class import *
 from star import*
-# gameState representa 
+
+# gameState representa se está em jogo, menu, créditos, etc
 gameState = 0
 overJogar = False
 overCreditos = False
 overBack = False
+overRightSkinSelector = False
+overLeftSkinSelector = False
+
+joroSelected = 0
+joroStyleID = ["Default", "Cowboy", "Super-Joro", "Magnate", "Witch"]
+joroStyleQuantity = len(joroStyleID)
+
+joroStylePic = [loadImage("footage/Esquilo/Esquilo_Standard.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin1_Cowboy.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin2_Mario.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin3_Cartola.png"), \
+                loadImage("footage/Esquilo/Esquilo_Standard_Skin4_Bruxa.png")]
 
 #Set variables
 stars = []
@@ -32,6 +45,10 @@ def setup():
     background(255)
     [stars.append(Star(width, height)) for i in range(800)]
     speed = map(10, 0, width, 0, 100)
+    
+    global joroSelected
+    joroSelected = 0
+    
     global posXbotaoJogar, posYbotaoJogar
     global posXbotaoCreditos, posYbotaoCreditos
     posXbotaoJogar = width/2-150
@@ -131,9 +148,14 @@ def update(x, y):
     global overJogar
     global overCreditos    
     global overBack
+    global overRightSkinSelector
+    global overLeftSkinSelector
+    
     overJogar = overRect(posXbotaoJogar, posYbotaoJogar, 250, 50)
-    overCreditos = overRect(posXbotaoCreditos, posYbotaoCreditos, 250, 50)
+    overCreditos = overRect(posXbotaoCreditos/2, posYbotaoCreditos-25, 250, 50)
     overBack = overRect(0, 0, 50, 50)
+    overRightSkinSelector = overRect(width-80, 360, 200, 200)
+    overLeftSkinSelector = overRect(0, 360, 80, 80)
         
 # Calcula a distancia entre a posicao do mouse e posicao do botao        
 def overRect(x, y, width, height):
@@ -142,6 +164,8 @@ def overRect(x, y, width, height):
 
 def mousePressed():
     global gameState
+    global joroSelected
+    
     if gameState == 1:
         s_gameover.pause()
         s_gameover.rewind()
@@ -167,16 +191,35 @@ def mousePressed():
     
     if overBack: #volta para o menu
         gameState = 0
+        
+    if overRightSkinSelector:
+        print(joroSelected)
+        if joroSelected == (joroStyleQuantity - 1):
+            joroSelected = 0
+        else:
+            joroSelected += 1
+    
+    if overLeftSkinSelector:
+        print(joroSelected)
+        if joroSelected == 0:
+            joroSelected = joroStyleQuantity - 1
+        else:
+            joroSelected -= 1
+            
 
 
 def drawMenu():
+    global joroSelected
+    global joroStylePic
+    
     update(mouseX, mouseY)
     menuBackgroud = loadImage("footage/menuBackgroud.jpg")
     image(menuBackgroud, 0, 0);
     
     fill(255)
     rect(width/2,height/1.5,250,50);
-    rect(width/2,0.3*height,250,50);
+    rect(width/2,0.5*height,350,50);
+    rect(width/2,height*0.166,250,55);
     
     fill(0)
     textAlign(CENTER, CENTER)
@@ -184,7 +227,18 @@ def drawMenu():
     textFont(font)
     
     text("Jogar\n", width/2, 2*height/10)
-    text("...", width/2, 3*height/10)
+    
+    textSize(42)
+    text(joroStyleID[joroSelected], width/2, 0.5*height)
+    arrow = loadImage("footage/arrow.png")
+    leftArrow = loadImage("footage/2arrow.png")
+    arrow.resize(80, 80)
+    leftArrow.resize(80, 80)
+    image(leftArrow, 0, 360) 
+    image(arrow, width-80, 360)
+    
+    # if joroSelected == 0:
+    #     image(joroStylePic[1], width/2, height/2)
     
     textSize(30)
     text("Creditos", width/2, height/1.5)
@@ -214,6 +268,15 @@ def drawCreditos():
     image(joro, width-129, height-115)
 
 
+def keyPressed():
+    global gameState
+    global p1
+    if keyCode == UP:
+        gameState = 0
+        drawMenu()
+        p1.ypos = height - 100
+
+
 def drawGame():
     s_menu.pause()
     frameRate(60)
@@ -237,13 +300,15 @@ def drawGame():
     p1.update(platforms,s_broke,powerups,s_pwjump,s_jump)
     platform_manager(platforms)
     powerup_manager(powerups)
+    platform_sounds(p1, platforms)
+
     #this ends the game if the player falls off the screen
     if p1.ypos > height+25:
         background(0)
         #para a musica de fundo
         s_tema.pause()
         s_tema.rewind()
-        s_gameover.loop()
+        s_gameover.play()
         fill(255, 255, 255)
         textAlign(CENTER, CENTER)
         textSize(80)
@@ -251,10 +316,11 @@ def drawGame():
         text("OVER", width/2, 3*height/10)
         textSize(40)
         text("Pontos: "+str(p1.score/100), width/2, 5*height/10)
+        text("Main Menu: [UP]", width/2, 0.6*height)
         text("Retry: [CLICK]", width/2, 7*height/10)
         text("Exit: [ESC]", width/2, 8*height/10)
         textAlign(LEFT)
-        noLoop()
+        #noLoop()
         
         
 def setBackground(p1):
