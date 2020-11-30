@@ -207,7 +207,6 @@ def mousePressed():
             joroSelected -= 1
             
 
-
 def drawMenu():
     global joroSelected
     global joroStylePic
@@ -215,7 +214,7 @@ def drawMenu():
     update(mouseX, mouseY)
     menuBackgroud = loadImage("footage/menuBackgroud.jpg")
     image(menuBackgroud, 0, 0);
-    
+   
     fill(255)
     rect(width/2,height/1.5,250,50);
     rect(width/2,0.5*height,350,50);
@@ -236,10 +235,7 @@ def drawMenu():
     leftArrow.resize(80, 80)
     image(leftArrow, 0, 360) 
     image(arrow, width-80, 360)
-    
-    # if joroSelected == 0:
-    #     image(joroStylePic[1], width/2, height/2)
-    
+      
     textSize(30)
     text("Creditos", width/2, height/1.5)
     
@@ -300,9 +296,9 @@ def drawGame():
     p1.update(platforms,s_broke,powerups,s_pwjump,s_jump)
     platform_manager(platforms)
     powerup_manager(powerups)
-    platform_sounds(p1, platforms)
+    #platform_sounds(p1, platforms)
 
-    #this ends the game if the player falls off the screen
+    #Quando o jogador cai para fora da tela: Game Over
     if p1.ypos > height+25:
         background(0)
         #para a musica de fundo
@@ -334,3 +330,4 @@ def setBackground(p1):
             background(space)
     
             
+# Joяoзззззззззззззpa
