@@ -11,7 +11,7 @@ def platform_manager(platforms):
             pass
     #makes sure that there are always 6 platforms on the screen
     while len(platforms) < 6:
-        new_platform = platform([random(425), 700-(145*len(platforms))])
+        new_platform = platform([random(400), 700-(145*len(platforms))])
         platforms.append(new_platform)
         
 def powerup_manager(powerups):

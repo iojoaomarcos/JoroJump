@@ -21,15 +21,28 @@ class player():
         
         #this updates the player position and velocity on collision
         for platform in platforms:
-            if (((self.ypos >= platform.ypos-30) and (self.ypos <= platform.ypos+30) and (self.yvel >= 0)) and ((self.xpos >= platform.xpos-25) and (self.xpos <= platform.xpos+75+25))):
+            if (((self.ypos >= platform.ypos-30) and (self.ypos <= platform.ypos+30) and (self.yvel >= 0)) and ((self.xpos >= platform.xpos-25) and (self.xpos <= platform.xpos+60+25))):
                 self.ypos = platform.ypos-25
                 self.yvel = -28
-                #print(self.score/100)
-                if self.score/100 > 200:
+                
+                #fase wood
+                if self.score/100 > 300:
                     if random(5) > 4:
                         platform.destroy(s_broke)
+                        
+                #fase sky        
                 elif self.score/100 > 500:
-                    platform.destroy(s_broke)
+                    if random(5) > 3:
+                        platform.destroy(s_broke)
+                    
+                #fase space
+                elif self.score/100 > 700:
+                    if random(5) > 2:
+                        platform.destroy(s_broke)
+                    
+                #fase infinity
+                elif self.score/100 > 900:
+                        platform.destroy(s_broke)    
         for powerup in powerups:
             if (((self.ypos >= powerup.ypos-60) and (self.ypos <= powerup.ypos+60) and (self.yvel >= 0)) and ((self.xpos >= powerup.xpos-60) and (self.xpos <= powerup.xpos+60))):
                 self.ypos = powerup.ypos-25

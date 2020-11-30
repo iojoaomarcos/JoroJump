@@ -50,8 +50,11 @@ def setup():
     
     
     #background
-    global wood
-    wood = loadImage("footage/wood.jpg")
+    global ground,wood,sky,space
+    ground = loadImage("footage/backgrounds/ground.jpg")
+    wood = loadImage("footage/backgrounds/wood.jpg")
+    sky = loadImage("footage/backgrounds/sky.jpg")
+    space = loadImage("footage/backgrounds/star.jpg")
     
     #joroskins
     global joro
@@ -66,8 +69,12 @@ def setup():
     plat = []
     platg = loadImage("footage/Platforms/plat0.png")
     platm = loadImage("footage/Platforms/plat1.png")
+    plats = loadImage("footage/Platforms/plat2.png")
+    plate = loadImage("footage/Platforms/plat3.png")
     plat.append(platg)
     plat.append(platm)
+    plat.append(plats)
+    plat.append(plate)
     
     #powerupskins
     global acorn
@@ -265,10 +272,10 @@ def keyPressed():
 def drawGame():
     s_menu.pause()
     frameRate(60)
-    background(wood)
-    
+    #background(255)
+    setBackground(p1)
     for platform in platforms:
-        platform.display(plat)
+        platform.display(plat,p1)
         
     for powerup in powerups:
         powerup.display(acorn)  
@@ -307,4 +314,12 @@ def platform_sounds(p1, platforms):
         else:
             pass
         
-        
+def setBackground(p1):
+        if p1.score/100 <= 300:
+            background(ground)
+        if p1.score/100 > 300 and p1.score/100 <= 500:
+            background(wood)
+        if p1.score/100 > 500 and p1.score/100 <= 700: 
+            background(sky)
+        if p1.score/100 > 700:
+            background(space)       
