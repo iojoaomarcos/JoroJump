@@ -24,7 +24,7 @@ overLeftSkinSelector = False
 
 joroSelected = 0
 joroStyleID = ["Default", "Cowboy", "Super-Joro", "Magnate", "Witch"]
-joroStyleQuantity = 5
+joroStyleQuantity = len(joroStyleID)
 
 joroStylePic = [loadImage("footage/Esquilo/Esquilo_Standard.png"), \
                 loadImage("footage/Esquilo/Esquilo_Standard_Skin1_Cowboy.png"), \
@@ -216,8 +216,10 @@ def drawMenu():
     textSize(42)
     text(joroStyleID[joroSelected], width/2, 0.5*height)
     arrow = loadImage("footage/arrow.png")
+    leftArrow = loadImage("footage/2arrow.png")
     arrow.resize(80, 80)
-    image(arrow, 0, 360) 
+    leftArrow.resize(80, 80)
+    image(leftArrow, 0, 360) 
     image(arrow, width-80, 360)
     
     # if joroSelected == 0:
